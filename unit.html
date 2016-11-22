@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Test Suite</title>
+    <!-- <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css" type="text/css" media="screen"> -->
+	<link rel="stylesheet" href="css/qunit-git.css" type="text/css" media="screen">
+</head>
+<body>
+    <h1 id="qunit-header">Test Suite</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup</div>
+
+    <div id="sandbox">
+        <!--Put here sandbox HTML if needed -->
+    </div>
+	
+	<!-- 
+    <script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
+    <script type="text/javascript" src="../../../application/public/js/app/lib/actions.js"></script>
+    <script type="text/javascript" src="../../../application/public/js/app/lib/render-utils.js"></script>
+    <script type="text/javascript" src="../../../application/public/js/app/lib/utils.js"></script> -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>    
+    <script type="text/javascript" src="data/testdata.js"></script>
+  <!--  
+    <script type="text/javascript" src="js/qunit-git.js"></script>
+    <script type="text/javascript" src="js/actions.js"></script>
+    <script type="text/javascript" src="js/render-utils.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>    -->
+    
+    <script type="text/javascript">       
+    	
+    	
+    
+        QUnit.test("One click global methods", function( assert ){ 
+        	assert.equal( camelize("test"), 'Test', "Convert first letter to uppercase" );
+            assert.equal( getFormattedDate("2016-10-04T12:00:00Z"), '10/04/2016', "getFormattedDate method will converts date and timezone into MM/DD/YYYY format" );
+        });	
+		
+        QUnit.test("One click Application Level Error Handling", function( assert ){ 
+        	assert.equal( checkValidityOfAPIData(apiData),true,"Application has proper data");
+        	assert.equal( checkValidityOfAPIData(""),false,"If we will get application data 'apiData' empty from server side, it will redirect to error page mentioned in errorObj");
+        	
+        	cdnBaseURL = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"If cdnBaseURL is empty we will redirect to error page \"This page is temporarily unavailable\"");
+        	assert.equal( errorObj.errorClass ,"ERR_SYSTEM_UNAVAILABLE","We have No error from server and cdnBaseURL is empty, application will redirect to default error page \"This page is temporarily unavailable\"");
+        	
+        	assert.equal( checkValidityOfAPIData({}),false,"If apiData will be an empty object, application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers[0].offer_id = '';
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData must contains offer data and offer_id should not be empty, if offer_id is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers[0].programType = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData must contains offer data and programType should not be empty, if programType is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers[0].start_date = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData must contains offer data and Start Date should not be empty, if Start Date is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers[0].end_date = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData must contains offer data and End Date should not be empty, if End Date is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers[0].sorParams.goto_rate  = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData.offer in sorParams.goto_rate must contains offer data and Goto Rate should not be empty, if Goto Rate is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+            apiData.offers[0].sorParams.gotorate_baseapr = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData.offer in sorParams.gotorate_baseapr must contains offer data and Gotorate Baseapr should not be empty, if Gotorate Baseapr is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers = null;
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData must contains offer data, if offer data will be empty application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.offers = [];
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData.offers must have atleast one offer details, if offer data will be empty application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.card.displayAccountNumber = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData.card must contains offer data and Display Account Number should not be empty, if Display Account Number is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.card.assetDescription = "";
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData.card must contains offer data and Asset Description should not be empty, if Asset Description is empty in offer data application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        	apiData.card = {};
+        	assert.equal( checkValidityOfAPIData(apiData),false,"apiData.card must not an empty object, if card data will be empty application will be redirect to \"This page is temporarily unavailable\" error page");
+        	
+        });	
+
+        
+    </script>
+</body>
+</html> 
